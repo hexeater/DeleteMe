@@ -1,3 +1,12 @@
+
+// Idea.  develop arthimetic operations for +, -, *, /
+// where the operands are represented by array of floating point numbers
+// where first float is the first N digits, second float is second N digits, etc.
+// Plus would be easy, just have to implement carry logic
+// Subtraction is easy
+// Multiplication is easy too...
+// I guess division has to emulate paper and pencil...
+
 import MetalKit
 
 struct MB_Context
@@ -7,19 +16,203 @@ struct MB_Context
     var zoom_y0: Float
     var zoom_x1: Float
     var zoom_y1: Float
+    var maxIterations: Int
 }
 
 
 class MainView: MTKView, MTKViewDelegate
 {
+    @IBOutlet weak var IterationCount: NSTextField!
+    @IBOutlet weak var ZoomLevel: NSTextField!
+    @IBOutlet weak var UpdateButton: NSButton!
+    
     var mbContext: MB_Context
     var viewport_width: Float
     var viewport_height: Float
     var needsRender = true
+    var maxIterations = 250
+    var zoomLevel:Float = 1.0
+
+    func dumpPrecisionInfoForLevel()
+    {
+        let zmPow = pow(2.0, -zoomLevel)
+        print("*********************dumpPrecisionInfoForLevel")
+        print("Type of zoomLevel is:  ", type(of:zoomLevel))
+        print("Float.leastNonzeroMagnitude is:  ", Float.leastNonzeroMagnitude)
+        print("Zoom level is ", zoomLevel)
+        print("2^(-ZL) = ", zmPow)
+        print("Type of zmPow is:  ", type(of:zmPow))
+        print("using this Width/Height: ", viewport_width, ",  ", viewport_height)
+        
+        print("Zoom Window currently is: ")
+        print(mbContext)
+
+        print("AS FLOAT")
+        evaluateCurrentMetalPrecision()
+        print("AS refactor")
+        evaluateRefactorMetalPrecision()
+
+        
+        print("Done ****************dumpPrecisionInfoForLevel")
+    }
+ 
+    func evaluateCurrentMetalPrecisionAsDouble()
+    {
+        // sample data for metal computation
+        var metal_id_x:Double = 3.0
+        var metal_id_y:Double = 3.0
+
+        var metal_id_x1:Double = 4.0
+        var metal_id_y1:Double = 4.0
+
+        // computation from Metal file
+        var metal_zoom_y1:Double = Double(1.0 - mbContext.zoom_y0)
+        var metal_zoom_y0:Double = Double(1.0 - mbContext.zoom_y1)
+
+
+        var metal_rangeX:Double = Double(mbContext.zoom_x1 - mbContext.zoom_x0)
+        var metal_rangeY:Double = metal_zoom_y1 - metal_zoom_y0;
+
+        var metal_x:Double = Double(mbContext.zoom_x0) + metal_rangeX * (metal_id_x / Double(viewport_width))
+        var metal_y:Double = metal_zoom_y0 + metal_rangeY * (metal_id_y / Double(viewport_height))
+
+        var metal_x1:Double = Double(mbContext.zoom_x0) + metal_rangeX * (metal_id_x1 / Double(viewport_width))
+        var metal_y1:Double = metal_zoom_y0 + metal_rangeY * (metal_id_y1 / Double(viewport_height))
+
+        metal_x = 4.0 * metal_x - 2.0;
+        metal_y = 4.0 * metal_y - 2.0;
+
+        metal_x1 = 4.0 * metal_x1 - 2.0;
+        metal_y1 = 4.0 * metal_y1 - 2.0;
+
+        print("metal_x_y:  ", metal_x, ", ", metal_y)
+        print("metal_x1_y1:  ", metal_x1, ", ", metal_y1)
+
+        var dx = metal_x1 - metal_x
+        var dy = metal_y1 - metal_y
+        
+        print("DX: ", dx)
+        print("DY: ", dy)
+
+        print("rangeX / width: ", metal_rangeX / Double(viewport_width))
+        print("rangeY / height: ", metal_rangeY / Double(viewport_height))
+        // computation from metal file is above here...
+
+
+    }
+
+    
+    func evaluateCurrentMetalPrecision()
+    {
+        // sample data for metal computation
+        var metal_id_x:Float = 3.0
+        var metal_id_y:Float = 3.0
+
+        var metal_id_x1:Float = 4.0
+        var metal_id_y1:Float = 4.0
+
+        // computation from Metal file
+        var metal_zoom_y1:Float = 1.0 - mbContext.zoom_y0
+        var metal_zoom_y0:Float = 1.0 - mbContext.zoom_y1
+
+
+        var metal_rangeX:Float = mbContext.zoom_x1 - mbContext.zoom_x0
+        var metal_rangeY:Float = metal_zoom_y1 - metal_zoom_y0;
+
+        var metal_x:Float = mbContext.zoom_x0 + metal_rangeX * (metal_id_x / viewport_width)
+        var metal_y:Float = metal_zoom_y0 + metal_rangeY * (metal_id_y / viewport_height)
+
+        var metal_x1:Float = mbContext.zoom_x0 + metal_rangeX * (metal_id_x1 / viewport_width)
+        var metal_y1:Float = metal_zoom_y0 + metal_rangeY * (metal_id_y1 / viewport_height)
+
+        // Before scaling
+        print("Before scaling")
+        print("metal_x_y:  ", metal_x, ", ", metal_y)
+        print("metal_x1_y1:  ", metal_x1, ", ", metal_y1)
+
+        var dx = metal_x1 - metal_x
+        var dy = metal_y1 - metal_y
+        
+        print("DX: ", dx)
+        print("DY: ", dy)
+
+        print("rangeX / width: ", metal_rangeX / viewport_width)
+        print("rangeY / height: ", metal_rangeY / viewport_height)
+
+        
+        
+        metal_x = 4.0 * metal_x - 2.0;
+        metal_y = 4.0 * metal_y - 2.0;
+
+        metal_x1 = 4.0 * metal_x1 - 2.0;
+        metal_y1 = 4.0 * metal_y1 - 2.0;
+
+        print("After Scaling")
+        print("metal_x_y:  ", metal_x, ", ", metal_y)
+        print("metal_x1_y1:  ", metal_x1, ", ", metal_y1)
+
+         dx = metal_x1 - metal_x
+         dy = metal_y1 - metal_y
+        
+        print("DX: ", dx)
+        print("DY: ", dy)
+
+        print("rangeX / width: ", 4.0 * metal_rangeX / viewport_width)
+        print("rangeY / height: ", 4.0 * metal_rangeY / viewport_height)
+        // computation from metal file is above here...
+
+
+    }
+  
+    func evaluateRefactorMetalPrecision()
+    {
+        // sample data for metal computation
+        var metal_id_x:Float = 3.0
+        var metal_id_y:Float = 3.0
+
+        var metal_id_x1:Float = 4.0
+        var metal_id_y1:Float = 4.0
+
+        // computation from Metal file
+        var metal_zoom_y1:Float = 1.0 - mbContext.zoom_y0
+        var metal_zoom_y0:Float = 1.0 - mbContext.zoom_y1
+
+
+        var metal_rangeX:Float = mbContext.zoom_x1 - mbContext.zoom_x0
+        var metal_rangeY:Float = metal_zoom_y1 - metal_zoom_y0;
+
+        var metal_x:Float = mbContext.zoom_x0 + metal_id_x * (metal_rangeX / viewport_width )
+        var metal_y:Float = metal_zoom_y0 + metal_id_y * ( metal_rangeY / viewport_height )
+        
+        var metal_x1:Float = mbContext.zoom_x0 + metal_id_x1 * (metal_rangeX / viewport_width )
+        var metal_y1:Float = metal_zoom_y0 + metal_id_y1 * ( metal_rangeY / viewport_height )
+
+
+        metal_x = 4.0 * metal_x - 2.0;
+        metal_y = 4.0 * metal_y - 2.0;
+
+        metal_x1 = 4.0 * metal_x1 - 2.0;
+        metal_y1 = 4.0 * metal_y1 - 2.0;
+
+        print("metal_x_y:  ", metal_x, ", ", metal_y)
+        print("metal_x1_y1:  ", metal_x1, ", ", metal_y1)
+
+        var dx = metal_x1 - metal_x
+        var dy = metal_y1 - metal_y
+        
+        print("DX: ", dx)
+        print("DY: ", dy)
+
+        print("rangeX / width: ", 4.0 * metal_rangeX / viewport_width)
+        print("rangeY / height: ", 4.0 * metal_rangeY / viewport_height)
+        // computation from metal file is above here...
+
+
+    }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize)
     {
-        mbContext = MB_Context(zoom_x0: 0.0, zoom_y0: 0.0, zoom_x1: 1.0, zoom_y1: 1.0)
+        mbContext = MB_Context(zoom_x0: 0.0, zoom_y0: 0.0, zoom_x1: 1.0, zoom_y1: 1.0, maxIterations: maxIterations)
         self.viewport_width = Float(size.width)
         self.viewport_height = Float(size.height)
     }
@@ -32,6 +225,10 @@ class MainView: MTKView, MTKViewDelegate
 
             guard let drawable = self.currentDrawable else {return}
             
+            print("here is the drawable width/height")
+            print(drawable.texture.width)
+            print(drawable.texture.height)
+
             let commandBuffer = commandQueue.makeCommandBuffer()
             let computeCommandEncoder = commandBuffer?.makeComputeCommandEncoder()
             
@@ -62,12 +259,13 @@ class MainView: MTKView, MTKViewDelegate
 
     required init(coder: NSCoder)
     {
-        mbContext = MB_Context(zoom_x0: 0.0, zoom_y0: 0.0, zoom_x1: 1.0, zoom_y1: 1.0)
+        mbContext = MB_Context(zoom_x0: 0.0, zoom_y0: 0.0, zoom_x1: 1.0, zoom_y1: 1.0, maxIterations:maxIterations)
         self.viewport_width = 1.0
         self.viewport_height = 1.0
 
         super.init(coder: coder)
 
+        IterationCount?.stringValue = "250"
         self.viewport_width = Float(self.drawableSize.width)
         self.viewport_height = Float(self.drawableSize.height)
 
@@ -101,7 +299,8 @@ class MainView: MTKView, MTKViewDelegate
     {
         // I hate swift syntax....
         let shiftKeyPressed = (event.modifierFlags.rawValue & 2) != 0
-        
+
+
         var zoom_x0 = mbContext.zoom_x0
         var zoom_y0 = mbContext.zoom_y0
         var zoom_x1 = mbContext.zoom_x1
@@ -160,6 +359,8 @@ class MainView: MTKView, MTKViewDelegate
 
         if(shiftKeyPressed)
         {
+            zoomLevel = zoomLevel - 1
+            
             newZoomDistanceX = currentZoomDistanceX*2
             if(newZoomDistanceX > 1.0)
             {
@@ -174,6 +375,10 @@ class MainView: MTKView, MTKViewDelegate
                 newZoomDistanceY = 1.0
             }
             zoomDy = -newZoomDistanceY/4
+        }
+        else
+        {
+            zoomLevel = zoomLevel + 1
         }
         
         zoom_x0 = zoom_x0 + zoomDx
@@ -221,7 +426,43 @@ class MainView: MTKView, MTKViewDelegate
         mbContext.zoom_y1 = zoom_y1
         
         needsRender = true
+        
+        ZoomLevel.stringValue = String(zoomLevel)
+        
+        dumpPrecisionInfoForLevel()
     }
+    
+    
+    @IBAction func buttonUpdate(_ sender: Any)
+    {
+        let value = Int(IterationCount.stringValue)
+        print(value ?? -1)
+        
+        maxIterations = value!
+
+/*        mbContext = MB_Context(zoom_x0: 0.0, zoom_y0: 0.0,
+                               zoom_x1: 1.0, zoom_y1: 1.0,
+                               maxIterations: maxIterations) */
+        
+        mbContext.maxIterations = value!
+
+        dumpPrecisionInfoForLevel()
+
+        needsRender = true
+        
+    }
+
+    @IBAction func CalculateStuff(_ sender: Any)
+    {
+
+        print("Hello")
+
+    }
+
+    
 }
+
+
+
 
 

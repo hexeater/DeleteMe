@@ -7,11 +7,12 @@ struct MB_Context
     float zoom_y0;
     float zoom_x1;
     float zoom_y1;
+    int maxIterations;
 };
 
-constant int maxIterations = 5000;
+//constant int maxIterations = 5000;
 
-int iterateMandelbrot (float x0, float y0)
+int iterateMandelbrot (float x0, float y0, int maxIterations)
 {
     float x = 0.0;
     float y = 0.0;
@@ -95,6 +96,6 @@ kernel void clear_pass_func(texture2d<half, access::write> tex [[ texture(0) ]],
     y = 4.0 * y - 2.0;
     
     //float y = thread_position_in_grid / mbContext->width
-    int count = iterateMandelbrot(x, y);
-    tex.write(mapValueToColor(count, maxIterations), id);
+    int count = iterateMandelbrot(x, y, mbContext->maxIterations);
+    tex.write(mapValueToColor(count, mbContext->maxIterations), id);
 }

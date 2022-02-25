@@ -13,7 +13,22 @@
 		D83E77EF27B61FAB00C3F884 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D83E77ED27B61FAB00C3F884 /* Main.storyboard */; };
 		D83E77F927B6208F00C3F884 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83E77F827B6208F00C3F884 /* MainView.swift */; };
 		D83E77FB27B6254300C3F884 /* GPU_Compute.metal in Sources */ = {isa = PBXBuildFile; fileRef = D83E77FA27B6254300C3F884 /* GPU_Compute.metal */; };
+		D8D6EA0027BDB8EF00434A1B /* BigFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6E9FF27BDB8EF00434A1B /* BigFloat.swift */; };
+		D8D6EA0827C0563600434A1B /* M2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6EA0727C0563600434A1B /* M2Tests.swift */; };
+		D8D6EA0E27C0579600434A1B /* BigFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6E9FF27BDB8EF00434A1B /* BigFloat.swift */; };
+		D8D6EA1027C5270500434A1B /* BigFloatGPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6EA0F27C5270400434A1B /* BigFloatGPU.swift */; };
+		D8D6EA1227C52B8500434A1B /* BigFloatGPU.metal in Sources */ = {isa = PBXBuildFile; fileRef = D8D6EA1127C52B8500434A1B /* BigFloatGPU.metal */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D8D6EA0927C0563600434A1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D83E77DC27B61FA800C3F884 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D83E77E327B61FA900C3F884;
+			remoteInfo = M2;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D83E77E427B61FA900C3F884 /* M2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = M2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,10 +39,22 @@
 		D83E77F027B61FAB00C3F884 /* M2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = M2.entitlements; sourceTree = "<group>"; };
 		D83E77F827B6208F00C3F884 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D83E77FA27B6254300C3F884 /* GPU_Compute.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GPU_Compute.metal; sourceTree = "<group>"; };
+		D8D6E9FF27BDB8EF00434A1B /* BigFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigFloat.swift; sourceTree = "<group>"; };
+		D8D6EA0527C0563600434A1B /* M2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = M2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8D6EA0727C0563600434A1B /* M2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = M2Tests.swift; sourceTree = "<group>"; };
+		D8D6EA0F27C5270400434A1B /* BigFloatGPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigFloatGPU.swift; sourceTree = "<group>"; };
+		D8D6EA1127C52B8500434A1B /* BigFloatGPU.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BigFloatGPU.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D83E77E127B61FA900C3F884 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8D6EA0227C0563600434A1B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,7 +67,11 @@
 		D83E77DB27B61FA800C3F884 = {
 			isa = PBXGroup;
 			children = (
+				D8D6EA1127C52B8500434A1B /* BigFloatGPU.metal */,
+				D8D6EA0F27C5270400434A1B /* BigFloatGPU.swift */,
+				D8D6E9FF27BDB8EF00434A1B /* BigFloat.swift */,
 				D83E77E627B61FA900C3F884 /* M2 */,
+				D8D6EA0627C0563600434A1B /* M2Tests */,
 				D83E77E527B61FA900C3F884 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D83E77E427B61FA900C3F884 /* M2.app */,
+				D8D6EA0527C0563600434A1B /* M2Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +115,14 @@
 			path = Display;
 			sourceTree = "<group>";
 		};
+		D8D6EA0627C0563600434A1B /* M2Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D8D6EA0727C0563600434A1B /* M2Tests.swift */,
+			);
+			path = M2Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,6 +143,24 @@
 			productReference = D83E77E427B61FA900C3F884 /* M2.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D8D6EA0427C0563600434A1B /* M2Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8D6EA0B27C0563600434A1B /* Build configuration list for PBXNativeTarget "M2Tests" */;
+			buildPhases = (
+				D8D6EA0127C0563600434A1B /* Sources */,
+				D8D6EA0227C0563600434A1B /* Frameworks */,
+				D8D6EA0327C0563600434A1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8D6EA0A27C0563600434A1B /* PBXTargetDependency */,
+			);
+			name = M2Tests;
+			productName = M2Tests;
+			productReference = D8D6EA0527C0563600434A1B /* M2Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -115,6 +173,10 @@
 				TargetAttributes = {
 					D83E77E327B61FA900C3F884 = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					D8D6EA0427C0563600434A1B = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = D83E77E327B61FA900C3F884;
 					};
 				};
 			};
@@ -132,6 +194,7 @@
 			projectRoot = "";
 			targets = (
 				D83E77E327B61FA900C3F884 /* M2 */,
+				D8D6EA0427C0563600434A1B /* M2Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -146,6 +209,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8D6EA0327C0563600434A1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -155,12 +225,32 @@
 			files = (
 				D83E77EA27B61FA900C3F884 /* ViewController.swift in Sources */,
 				D83E77F927B6208F00C3F884 /* MainView.swift in Sources */,
+				D8D6EA1227C52B8500434A1B /* BigFloatGPU.metal in Sources */,
 				D83E77FB27B6254300C3F884 /* GPU_Compute.metal in Sources */,
+				D8D6EA0027BDB8EF00434A1B /* BigFloat.swift in Sources */,
+				D8D6EA1027C5270500434A1B /* BigFloatGPU.swift in Sources */,
 				D83E77E827B61FA900C3F884 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8D6EA0127C0563600434A1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8D6EA0827C0563600434A1B /* M2Tests.swift in Sources */,
+				D8D6EA0E27C0579600434A1B /* BigFloat.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D8D6EA0A27C0563600434A1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D83E77E327B61FA900C3F884 /* M2 */;
+			targetProxy = D8D6EA0927C0563600434A1B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D83E77ED27B61FAB00C3F884 /* Main.storyboard */ = {
@@ -339,6 +429,38 @@
 			};
 			name = Release;
 		};
+		D8D6EA0C27C0563600434A1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.joe.M2Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/M2.app/Contents/MacOS/M2";
+			};
+			name = Debug;
+		};
+		D8D6EA0D27C0563600434A1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.joe.M2Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/M2.app/Contents/MacOS/M2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -356,6 +478,15 @@
 			buildConfigurations = (
 				D83E77F427B61FAB00C3F884 /* Debug */,
 				D83E77F527B61FAB00C3F884 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8D6EA0B27C0563600434A1B /* Build configuration list for PBXNativeTarget "M2Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8D6EA0C27C0563600434A1B /* Debug */,
+				D8D6EA0D27C0563600434A1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
